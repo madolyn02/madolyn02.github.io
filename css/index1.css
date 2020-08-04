@@ -1,0 +1,235 @@
+/* css for all properties */
+html, body {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #9fabaf;
+  color: #FFFFFF;
+  font-family: 'Prata', serif;
+  /* min-height: 100%; */
+  background-attachment: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+.right{
+  width: 100%;
+  position: absolute;
+  right: 0%;
+}
+
+
+.button {
+  background-color: transparent; /* Green */
+  border: 50%;
+  color: white;
+  padding: 16px 32px;
+  text-align: right;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.button1 {
+  background-color: transparent;
+  color: white;
+  position: relative;
+}
+.button1:hover {
+  background-color: transparent;
+  color: white;
+  /*border: 2px solid white;*/
+}
+h1 {
+  font-family: 'Prata', serif;
+  font-size: 48px;
+}
+.main {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  text-align: center;
+  color: black;
+  letter-spacing: 3px;
+  /* padding-top: 22%; */
+}
+/* Stuff that needs to be center */
+.center {
+  text-align: center;
+}
+
+footer{
+  padding-top: 2%;
+  padding-bottom: 2%;
+  margin-top: 5%;
+  line-height: 110%;
+}
+
+/* there's a column for the body as well like in the footer */
+  .column {
+  float: left;
+  width: 40%;
+  padding: 50px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+  text-align: center;
+}
+img.resize{
+  max-width: 50%
+  max-height: 50%;
+}
+.column a {
+  color: white;
+}
+/* properties for the about text paragraph on the front page */
+p {
+  line-height: 1.2em !important;
+  color: white;
+  font-family: 'ZCOOL QingKe HuangYou';
+  /*background: rgba(0, 0, 0, 0.5);*/
+}
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media screen and (max-width: 500px) {
+/*  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .header-right {
+    float: none;
+  }
+}
+*/
+hr {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* Custom Font sizes, helps with moble viwing */
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2.25rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h4 {
+  font-size: 1.75rem;
+}
+
+h5 {
+  font-size: 1.5rem;
+}
+
+h6 {
+  font-size: 1.25rem;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 992px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 16px;
+  }
+}
+/* Style all font awesome icons */
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity: 0.7;
+}
+
+.fa-twitter {
+  background: #9fabaf;
+  color: white;
+}
+
+.fa-instagram {
+  background: #9fabaf;
+  color: white;
+}
+
+table.scroll {
+    width: 100%;
+    border-spacing: 0;
+    border: 2px solid white;
+}
+
+table.scroll tbody,
+table.scroll thead { display: block; }
+
+thead tr th {
+    height: 30px;
+    width: 100%;
+    line-height: 30px;
+    text-align: left;
+}
+
+table.scroll tbody {
+    height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+tbody { border-top: 2px solid white; }
+
+tbody td, thead th {
+    width: 0%;
+    border-right: 1px solid white;
+    /* white-space: nowrap; */
+}
+
+tbody td:last-child, thead th:last-child {
+    border-right: none;
+}
