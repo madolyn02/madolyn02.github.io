@@ -1,26 +1,39 @@
-/* css for all properties */
 html, body {
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #9fabaf;
-  color: #FFFFFF;
-  font-family: 'Prata', serif;
-  /* min-height: 100%; */
-  background-attachment: fixed;
-  height: 100%;
-  width: 100%;
-  margin: 0;
   scroll-behavior: smooth;
+}
+.navbar{
+  background-color: #3f612d;
+}
+.nav-link{
+  color: #fcf2d8;
+  font-family: 'Chilanka', cursive;
+
+}
+.nav-link:hover{
+  color: #fcf2d8;
+  opacity: 50%;
+}
+.nav-link a{
+  color: #fcf2d8;
+}
+.pic-of-me{
+  width: 75%;
+  border-radius: 50%;
+  border: 5px solid #3f612d;
 }
 .right{
   width: 100%;
   position: absolute;
   right: 0%;
 }
-
-
+.center{
+  position: relative;
+  align: center;
+}
 .button {
   background-color: transparent; /* Green */
   border: 50%;
