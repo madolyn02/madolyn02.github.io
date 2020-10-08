@@ -20,10 +20,22 @@ html, body {
   line-height: 1.5;
   scroll-behavior: smooth;
 }
-.btn-dark:hover{
+
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,0,0, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  color: #fcf2d8;
+
+}
+
+.custom-toggler.navbar-toggler {
+  border-color: #fcf2d8;
+}
+
+/* .btn-dark:hover{
   text-decoration: none;
   opacity: 50%;
-}
+} */
 h1{
 font-family: 'Chilanka', cursive;
 font-size: 5vw;"
@@ -46,7 +58,7 @@ font-size:  1.5vw;
 text-align: center;
 }
 .navbar{
-  background-color: #3f612d;
+  background-color: #d42487;
 }
 .nav-link{
   color: #fcf2d8;
@@ -57,6 +69,7 @@ text-align: center;
   color: #fcf2d8;
   opacity: 50%;
 }
+
 .nav-link a{
   color: #fcf2d8;
 }
@@ -74,6 +87,7 @@ text-align: center;
   position: relative;
   align: center;
 }
+
 .button {
   background-color: transparent; /* Green */
   border: 50%;

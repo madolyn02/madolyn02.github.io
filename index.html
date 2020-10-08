@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Web Portfolio</title>
+  <title>Hi, my name is Madolyn!</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/index.css">
@@ -9,8 +9,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Mukta+Malar&display=swap" rel="stylesheet">
-  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+  <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- <script src="js/jquery-3.3.1.min.js"></script> -->
    <!-- <script src="js/index.js"></script> -->
@@ -36,16 +38,45 @@
 #myBtn:hover {
   opacity: 50%;
 }
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(252, 242, 216, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler.navbar-toggler {
+  border-color: rgb(252, 242, 216);
+}
 </style>
 <body>
 
 
-<nav class="navbar navbar-expand-sm">
-  <a class="navbar-brand" href="#" style="color: #fcf2d8; font-family: 'Chilanka', cursive;">Madolyn Glocksine</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+  <!--
+  <nav class="navbar navbar-expand-sm">
+    <a class="navbar-brand" href="#" style="color: #fcf2d8; font-family: 'Chilanka', cursive;">Madolyn Glocksine</a>
+      <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse custom-toggler" style="postion: relative; align: left" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/shop.html">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/custom.html">Place An Order</a>
+          </li>
+        </ul>
+      </div>
+    </nav> -->
+
+
+    <nav class="navbar navbar-expand-sm">
+      <a class="navbar-brand" href="#" style="color: #fcf2d8; font-family: 'Chilanka', cursive;">Madolyn Glocksine</a>
+      <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon" style="color: #fcf2d8"></span>
+      </button>
+      <div class="collapse navbar-collapse custom-toggler" style="postion: relative; align: left; color: #fcf2d8" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" href="#aboutme">About Me</a>
@@ -56,9 +87,9 @@
       <li class="nav-item">
         <a class="nav-link" href="#mywork">Projects</a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="#experience">Experience</a>
-      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="#experience">Extracurriculars</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="#awards">Awards and Articles</a>
       </li>
@@ -98,7 +129,7 @@
         </li>
       </ul>
     </div> -->
-    <div class="jumbotron text-center" style="margin-bottom:0; background-color: #ffffff">
+    <div class="jumbotron text-center" style="margin-bottom:0; background-image: url('images/art.jpg'); background-position: center center;  background-repeat: no-repeat; background-attachment: fixed;  background-size: cover;  background-color: #464646;">
       <div class="container-fluid">
       <div class="row">
   <div class="col-6">
@@ -180,10 +211,10 @@
 <br>
 <div class="row">
   <div class="col-6 center">
-    <img src="images\woodworking.png" style="width: 80%; border-radius: 5%; right: 2%">
+    <img src="images\woodworkingweb.png" style="width: 80%; border-radius: 5%; right: 2%">
   </div>
   <div class="col-6 center">
-<p style="font-family: 'Mukta Malar', sans-serif; font-size:  1.5vw; text-align: center; bottom: 50%">This is a current project that, at the moment, is unfinished. I'm creating a store and order forms for my cousin's woodworking business. This is my first time using Bootstrap and creating a responsive web design. Along the way, I am learning how to style HTML forms.</p>
+<p style="font-family: 'Mukta Malar', sans-serif; font-size:  1.5vw; text-align: center; bottom: 50%">This is my current project. I'm creating a store and order forms for my cousin's woodworking business. This is my first time using Bootstrap and creating a responsive web design. Along the way, I am learning how to style HTML forms.</p>
 <br>
 <a href="https://woodworkingwebsite.github.io/shop.html" class="btn-dark btn-lg disabled" role="button" aria-disabled="true">Visit Project</a>
   </div>
