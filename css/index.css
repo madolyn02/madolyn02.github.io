@@ -58,8 +58,16 @@ font-size:  1.5vw;
 text-align: center;
 }
 .navbar{
-  background-color: #d42487;
+  background-color: #096FC3;
 }
+/* .navbar-brand {
+  background: url(images/Untitled_design-removebg-preview.png) center / contain no-repeat;
+  transform: translateX(-50%);
+  left: 50%;
+  padding-bottom: 20px;
+  position: absolute;
+  width: 200px; /* no height needed ... image will resize automagically */
+} */
 .nav-link{
   color: #f1f1f1;
   font-family: 'Chilanka', cursive;
