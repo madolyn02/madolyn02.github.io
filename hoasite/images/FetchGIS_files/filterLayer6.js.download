@@ -1,0 +1,282 @@
+/*
+    Them be the filter layes. A layer that is filtered via attribute values. If you want an editble filter layer just use the editFeatureLayer as it has all this stuff too.
+
+*/
+
+define([
+    "dojo/query",
+    "dojo/request",
+    "dojo/_base/declare",
+    "dojo/_base/array",
+    "esri/layers/LOD",
+    "esri/geometry/Point",
+    "esri/geometry/Extent",
+    "esri/layers/TileInfo",
+    "esri/SpatialReference",
+    "esri/geometry/Polygon",
+    "esri/layers/FeatureLayer"
+], function (query, request, declare, array, LOD, Point, Extent, TileInfo, SpatialReference, Polygon, FeatureLayer) {
+        return declare("filterLayer", FeatureLayer, {
+
+            _defaultXhrTimeout: 15000, // ms
+
+            currentMap: currentMap,
+            attributeFilter: {},
+            excludeFilter: {},
+            showAllFilter: {},
+            filterLayer: true,
+            filterReady : false,
+            
+            constructor: function (url, options) {
+                this.attributeFilter[this.id] = [];
+                this.excludeFilter[this.id] = [];
+                this.showAllFilter[this.id] = false;
+                this.filterLayer = true;
+                if (options.defaultFilter){
+                    if(!params.activeLayers || params.activeLayers == 'undefined'){
+                        if(Array.isArray(options.defaultFilter)){ //if array is already constructed properly
+                            this.attributeFilter[this.id] = options.defaultFilter; // set default filter - will be applied when the layer loads
+                        } else { //else we need to format
+                            this.attributeFilter[this.id] = newFilter(options.defaultFilter); // set default filter - will be applied when the layer loads
+                        }
+                    } else{
+                        // this.attributeFilter[this.id][Object.keys(options.defaultFilter)[0]] =  []; // set default filter field at least
+                    }
+                }
+                
+                if (options.defaultExclude){
+                    if(!params.activeLayers || params.activeLayers == 'undefined'){
+                        if(Array.isArray(options.defaultExclude)){ //if array is already constructed properly
+                            this.excludeFilter[this.id] = options.defaultExclude; // set default filter - will be applied when the layer loads
+                        } else { //else we need to format
+                            this.excludeFilter[this.id] = newFilter(options.defaultExclude); // set default filter - will be applied when the layer loads
+                        }
+                    } else{
+                        // this.excludeFilter[this.id][Object.keys(options.defaultExclude)[0]] =  []; // set default filter field at least
+                    }
+                }
+
+                var self = this;
+                this.on('update-end', function (e) {
+                    self.filterReady = true;
+                    self.refreshFilter();
+                });
+
+                function newFilter(f){ //convert defaults to individual filters
+                    let filters = [];
+                    for(field of Object.keys(f)){ 
+                        for(val of f[field]){
+                            let tempFilter = {field:[],values:[]};
+                            tempFilter.field.push(field);
+                            if(Array.isArray(val)){
+                                tempFilter.values.push(val);
+                            } else {
+                                tempFilter.values.push([val]);
+                            }
+                            filters.push(tempFilter)
+                        }
+                    }
+                    return filters;
+                }
+            },
+
+            /*
+            _initFeatureLayer:function(url,options){
+                this._ts=true;//turns on cache busting
+
+                this.inherited(arguments);
+            },
+            */
+
+            // filter methods
+            refreshFilter: function () {
+                if(this.filterReady != true){
+                    return;
+                }
+                var shouldShow=false; //does this layer have any graphics that need to be shown
+                let hasShowAllFilterSet = this.showAllFilter[this.id];
+                let availFilters = this.attributeFilter[this.id] && Object.keys(this.attributeFilter[this.id]).length > 0 ? this.attributeFilter[this.id] : null;
+                let availExcludeFilters = this.excludeFilter[this.id] && Object.keys(this.excludeFilter[this.id]).length > 0 ? this.excludeFilter[this.id] : null;
+                for (var i = 0; i < this.graphics.length; i++) {
+                    var graphic = this.graphics[i];
+                    graphic.hide();//hide by default
+                    if(hasShowAllFilterSet){
+                        graphic.show();
+                        shouldShow=true;
+                    } else {
+                        //need to make sure features matches all available filters
+                        if(availFilters || availExcludeFilters){
+                            let passedCheck = false;
+                            if(availExcludeFilters){ //exclude first, then add back in if in other filters
+                                passedCheck = true;
+                                let t = [];
+                                for(let j=0; j<availExcludeFilters.length; j++){ //passes unless the field and value dont match the filter
+                                    let filter = availExcludeFilters[j];
+                                    let passedFilter = true;
+                                    for(let i=0; i<filter.field.length; i++){
+                                        if(filter.values[i] == null){ //special case
+                                            if(graphic.attributes[filter.field[i]] == null) passedFilter = false;
+                                        } else if(filter.values[i].indexOf(graphic.attributes[filter.field[i]]) > -1){
+                                            passedFilter = false;
+                                        }
+                                    }
+                                    t[j] = passedFilter; //did this graphic pass this all parts of this filter?
+                                }
+                                for(a of t){ //if passed all filters
+                                    if(!a) passedCheck = false;
+                                }
+                            }
+                            if(availFilters){
+                                let t = [];
+                                for(let j=0; j<availFilters.length; j++){ //passes unless the field and value dont match the filter
+                                    let filter = availFilters[j];
+                                    let passedFilter = true; //must pass all parts of this filter to stay true
+                                    for(let i=0; i<filter.field.length; i++){
+                                        if(filter.values[i] == null){ //special case
+                                            if(graphic.attributes[filter.field[i]] == null) passedFilter = true;
+                                        } else if(filter.values[i].indexOf(graphic.attributes[filter.field[i]]) == -1){
+                                            passedFilter = false;
+                                        }
+                                    }
+                                    t[j] = passedFilter; //did this graphic pass this entire filter?
+                                }
+                                for(a of t){ //if passed at least one filter
+                                    if(a) passedCheck = true;
+                                }
+                            }
+        
+                            if(passedCheck){
+                                graphic.show();
+                                shouldShow=true;
+                            }
+                        }
+                        //check for map, as corteva and buildings break this. demo is not in renderer
+                        if(currentMap == 'hsc' && !graphic.visible){ //no matter what, we want these shown
+                            let show = false;
+                            if(this.renderer && this.renderer.values && this.renderer.values.indexOf(graphic.attributes[this.renderer.attributeField]) == -1){
+                                show = true;
+                            }
+                            if( !show && ( (this.id == 'fittingLayer' || this.id == 'pipeLayer' || this.id == 'valveLayer' || this.id == 'pipePointLayer' || this.id == 'electricCableLayer' || this.id == 'commCableLayer') && !graphic.attributes.Location) ){
+                                show = true;
+                            }
+                            if(show){
+                                graphic.show();
+                                shouldShow=true;
+                            }
+                        }
+                    }
+                }
+                if(shouldShow){
+                    this.show();
+                }
+            },
+
+            /**
+             * Add new filter to this layer
+             * @param {*} field can be "field" or ['field','field']
+             * @param {*} values can be ['value','value'] or[['value','value'],['value','value']]
+             * if field is array, then it will use the index of field to determine which array of values to use
+             * example: field : ['location','utility'] , values : [['underground'],['water']]
+             * location will use underground, utility will use water
+             * @param {*} exclude true or false, is this an exclude filter
+             * @param {*} showAll true or false
+             */
+            addFilter: function (field, values, exclude, showAll) {
+                let filter = {field: field, values: values};
+                if(!Array.isArray(field)){ //if single field and is only text, update so that it is in array such that index of [field] is the same as index of [[values],[values]]
+                    filter = {field:[field], values:[values]};
+                }
+                if(showAll === true){
+                    this.showAllFilter[this.id] = true;
+                } else if(exclude === true){
+                    if(values[0] == 'ALL'){ //update older method to new showAll
+                        this.showAllFilter[this.id] = true
+                    } else {
+                        let good = true;
+                        if(!this.excludeFilter[this.id]){
+                            this.excludeFilter[this.id] = [];
+                        }
+                        let filters = this.excludeFilter[this.id];
+                        for(f of filters){
+                            if(JSON.stringify(f) == JSON.stringify(filter)){ //is this filter already there?
+                                good = false; //don't add another
+                                break;
+                            }
+                        }
+                        if(good){
+                            this.excludeFilter[this.id].push(filter);
+                        }
+                    }
+                } else {
+                    let good = true;
+                    if(!this.attributeFilter[this.id]){
+                        this.attributeFilter[this.id] = [];
+                    }
+                    let filters = this.attributeFilter[this.id];
+                    for(f of filters){
+                        if(JSON.stringify(f) == JSON.stringify(filter)){ //is this filter already there?
+                            good = false; //don't add another
+                            break;
+                        }
+                    }
+                    if(good){
+                        this.attributeFilter[this.id].push(filter);
+                    }
+                }
+                this.refreshFilter();
+            },
+
+            /**
+             * remove filter on this layer
+             * @param {*} field can be "field" or ['field','field']
+             * @param {*} values can be ['value','value'] or[['value','value'],['value','value']]
+             * if field is array, then it will use the index of field to determine which array of values to use
+             * example: field : ['location','utility'] , values : [['underground'],['water']]
+             * location will use underground, utility will use water
+             * @param {*} exclude true or false, is this an exclude filter
+             * @param {*} showAll true or false
+             */
+            removeFilter: function (field, values, exclude, showAll) {
+                let filter = {field: field, values: values};
+                if(!Array.isArray(field)){ //if single field, update so that it is in array such that index of [field] is the same as index of [[values],[values]]
+                    filter = {field:[field], values:[values]};
+                }
+                if(showAll === true){
+                    if (this.showAllFilter[this.id]) {
+                        this.showAllFilter[this.id] = false;
+                    }
+                } else if(exclude === true){
+                    if(values[0] == 'ALL'){ //update older method to new showAll
+                        if (this.showAllFilter[this.id]) {
+                            this.showAllFilter[this.id] = false;
+                        }
+                    } else {
+                        let toSplice = [];
+                        let filters = this.excludeFilter[this.id];
+                        for(let i=0; i<filters.length; i++){
+                            let f = filters[i];
+                            if(JSON.stringify(f) == JSON.stringify(filter)){ //does it match?
+                                toSplice.push(i); //add this index to array to remove
+                            }
+                        }
+                        for(i of toSplice){ //remove all in array
+                            this.excludeFilter[this.id].splice(i, 1);
+                        }
+                    }
+                } else {
+                    let toSplice = [];
+                    let filters = this.attributeFilter[this.id];
+                    for(let i=0; i<filters.length; i++){
+                        let f = filters[i];
+                        if(JSON.stringify(f) == JSON.stringify(filter)){ //does it match?
+                            toSplice.push(i); //add this index to array to remove
+                        }
+                    }
+                    for(i of toSplice){ //remove all in array
+                        this.attributeFilter[this.id].splice(i, 1);
+                    }
+                }
+                this.refreshFilter();
+            },
+        });
+    });
